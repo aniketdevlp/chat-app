@@ -44,9 +44,13 @@ app.use("/api/messages", messageRouter)
 // Connect to MongoDB
 await connectDB();
 
-if(process.env.NODE_ENV !== "production"){
-    const PORT = process.env.PORT || 5000;
-    server.listen(PORT, ()=>console.log("Server is running on PORT: "+PORT))
-}
-// export server for vercel
+// Remove the if(process.env.NODE_ENV !== "production") block
+const PORT = process.env.PORT || 5000;
+
+// Start the server directly and bind to all network interfaces (0.0.0.0)
+server.listen(PORT, "0.0.0.0", () => {
+    console.log("Server is running on PORT: " + PORT);
+});
+
+// You can keep this if you plan to still deploy to Vercel, it won't hurt Render
 export default server;
